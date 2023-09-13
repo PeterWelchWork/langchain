@@ -136,8 +136,9 @@ class BaseRetrievalQA(Chain):
             docs = self._get_docs(question, run_manager=_run_manager)
         else:
             docs = self._get_docs(question)  # type: ignore[call-arg]
+        inputs['input_documents'] = docs
         answer = self.combine_documents_chain.run(
-            input_documents=docs, question=question, callbacks=_run_manager.get_child()
+            inputs, callbacks=_run_manager.get_child()
         )
 
         if self.return_source_documents:
